@@ -56,15 +56,17 @@ endfunction()
 option(USE_WHOLE_ARCHIVE "Use wholearchive linking" OFF)
 
 # This alias can "fix" the pkgconfig installation
-option(USE_ALIAS "Use library alias for pkgconfig installation" OFF)
-if(USE_ALIAS)
-  set(http_alias "${namespace}http")
-  add_library(${http_alias} ALIAS http)
-else()
-  set(http_alias http)
-endif()
-
+option(USE_WHOLE_ARCHIVE "Use wholearchive linking" OFF)
 if(USE_WHOLE_ARCHIVE)
+
+  option(USE_ALIAS "Use library alias for pkgconfig installation" OFF)
+  if(USE_ALIAS)
+    set(http_alias "${namespace}http")
+    add_library(${http_alias} ALIAS http) # this will satisfy namespace:: syntax requirements
+  else()
+    set(http_alias http) # this will fail in the post installatino pkgconfig consumer
+  endif()
+  
   # for error "ld: file not found: /cmake_whole_archive/_builds/xcode/Release/libhttp.a"
   add_dependencies(main http) # without this it will fail
   add_whole_archive_flag(${http_alias} http_link_command)

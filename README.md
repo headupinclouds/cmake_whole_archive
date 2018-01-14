@@ -1,6 +1,6 @@
 # cmake_whole_archive
 
-This project contains a minimal yet functional simple test to illustrate proper use of "wholearchive" compiler flags when linking executables with certain static libraries.  Both in project (build tree) and post installed pkconfig cases (i.e., `find_package(BAR CONFIG REQUIRED)` + `target_link_libraries(FOO PUBLIC BAR::bar)`) are demonstrated.  The following test case is reproduced from this stackoverflow.com post (with a few build fixes):
+This project contains a minimal yet functional simple test to illustrate proper use of "wholearchive" compiler flags when linking executables with certain static libraries.  Both in project (build tree) and post installation `pkconfig` cases (i.e., `find_package(BAR CONFIG REQUIRED)` + `target_link_libraries(FOO PUBLIC BAR::bar)`) are demonstrated.  The following test case is reproduced from this stackoverflow.com post (with a few build fixes):
 
 https://stackoverflow.com/a/842770
 

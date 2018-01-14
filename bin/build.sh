@@ -3,7 +3,18 @@
 TOOLCHAIN=libcxx
 CONFIG=Release
 
-USE_WHOLE_ARCHIVE=ON
+#USE_WHOLE_ARCHIVE=ON
+#USE_ALIAS=ON
+
+if [ -z "${USE_WHOLE_ARCHIVE}" ]; then
+    echo 2>&1 "USE_WHOLE_ARCHIVE must be set to ON/OFF"
+    exit 0
+fi
+
+if [ -z "${USE_ALIAS}" ]; then
+    echo 2>&1 "USE_ALIAS must be set to ON/OFF"
+    exit 0
+fi
 
 lib_output="library/_builds/${TOOLCHAIN}-${CONFIG}"
 lib_args=(
@@ -16,6 +27,7 @@ lib_args=(
   "-DHUNTER_STATUS_DEBUG=ON"
   "-DCMAKE_INSTALL_PREFIX=library/_install/${TOOLCHAIN}"
   "-DUSE_WHOLE_ARCHIVE=${USE_WHOLE_ARCHIVE}"
+  "-DUSE_ALIAS=${USE_ALIAS}"
   )
 
 app_output="application/_builds/${TOOLCHAIN}-${CONFIG}"

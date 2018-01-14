@@ -147,6 +147,119 @@ set_target_properties(cmake_whole_archive_lib::dummy PROPERTIES
 ### snip ###
 ```
 
+### Case 1
+
+```
+USE_ALIAS=OFF USE_WHOLE_ARCHIVE=OFF ./bin/build.sh
+```
+
+
+This build script doesn't use "wholearchive" linking, so the build tree linking with the main application is fine, but the required symbols needed from global constructor side effects are stripped out and the runtime test fails:
+
+```
+Test project /Users/dhirvonen/devel/cmake_whole_archive/library/_builds/libcxx-Release
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: link_test
+
+1: Test command: /Users/dhirvonen/devel/cmake_whole_archive/library/_builds/libcxx-Release/main
+1: Test timeout computed to be: 9.99988e+06
+1/1 Test #1: link_test ........................***Failed    0.00 sec
+
+0% tests passed, 1 tests failed out of 1
+
+Total Test time (real) =   0.00 sec
+
+The following tests FAILED:
+	  1 - link_test (Failed)
+Errors while running CTest
+```
+
+### Case 2
+
+```
+USE_ALIAS=OFF USE_WHOLE_ARCHIVE=ON ./bin/build.sh 
+```
+
+The library project build works and build tree linking also works (due to use of "wholearchive" flags), but the `pkcfongi` installation propagates names from the build tree (no `namespace::foo` syntax) so the `application` fails to build:
+
+```
+-- Configuring done
+CMake Error:
+  Error evaluating generator expression:
+
+    $<TARGET_FILE:http>
+
+  No target "http"
+
+
+CMake Error:
+  Error evaluating generator expression:
+
+    $<TARGET_FILE:http>
+
+  No target "http"
+
+
+-- Generating done
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    HUNTER_STATUS_DEBUG
+    POLLY_STATUS_DEBUG
+```
+
+### Case 3
+
+```
+USE_ALIAS=ON USE_WHOLE_ARCHIVE=ON ./bin/build.sh 
+```
+
+In this case we use the "wholearchive" flags and a namespaced build tree library alias, such that the `pkgconfig` installation file syntax is correct, the sample `application` links properly, and the run time tests get the symbols they need from the global constructor side-effects.
+
+```
+Test project /Users/dhirvonen/devel/cmake_whole_archive/library/_builds/libcxx-Release
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: link_test
+
+1: Test command: /Users/dhirvonen/devel/cmake_whole_archive/library/_builds/libcxx-Release/main
+1: Test timeout computed to be: 9.99988e+06
+1/1 Test #1: link_test ........................   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.00 sec
+
+### snip ###
+
+Test project /Users/dhirvonen/devel/cmake_whole_archive/application/_builds/libcxx-Release
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: link_test
+
+1: Test command: /Users/dhirvonen/devel/cmake_whole_archive/application/_builds/libcxx-Release/main
+1: Test timeout computed to be: 9.99988e+06
+1/1 Test #1: link_test ........................   Passed    0.00 sec
+
+```
+
+
 Which make the final `main` target happy.
 
 References:

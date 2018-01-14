@@ -4,7 +4,7 @@ This project contains a minimal yet functional simple test to illustrate proper 
 
 https://stackoverflow.com/a/842770
 
-The above post outlines a common use cases where global instances are registered in a common table using constructor side effects.  The source from the original SO post is reproduced here (inline) with some minor build related fixes:
+The above post outlines a common use cases where global instances are registered in a common table using constructor side effects.  This pattern is used in tensorflow, for example.  The source from the original SO post is reproduced here (inline) with some minor build related fixes:
 
 library/main.cc:
 ```

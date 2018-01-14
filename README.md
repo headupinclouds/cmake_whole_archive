@@ -87,7 +87,7 @@ This CMakeLists.txt file illustrates use of "wholearchive" flags in the executab
   * GCC   : `--whole_archive FOO --no-whole-archive`
   
 
-If we are consuming the post installation pkgconfig libraries from the library installation (see [CMakeLists.txt](https://github.com/headupinclouds/cmake_whole_archive/blob/00d7caed7e4e5c96d6d29c82a935d73bef651687/library/CMakeLists.txt#L89-L163) installation) in a users's executable (see [CMakeLists.txt](https://github.com/headupinclouds/cmake_whole_archive/blob/00d7caed7e4e5c96d6d29c82a935d73bef651687/application/CMakeLists.txt#L9-L10)), then the `main.cpp` application would be identical to the build tree version, but the CMake code will link the installed library use `find_package() + target_link_libraries()`.
+If we are consuming the post installation `pkgconfig` libraries from the `library` target installation (see [CMakeLists.txt](https://github.com/headupinclouds/cmake_whole_archive/blob/00d7caed7e4e5c96d6d29c82a935d73bef651687/library/CMakeLists.txt#L89-L163) installation) in a users's executable (see [CMakeLists.txt](https://github.com/headupinclouds/cmake_whole_archive/blob/00d7caed7e4e5c96d6d29c82a935d73bef651687/application/CMakeLists.txt#L9-L10)), then the `main.cpp` application would be identical to the build tree version, but the CMake code will link the installed library using `find_package() + target_link_libraries()`.
 
 application/CMakeLists.txt
 
@@ -135,7 +135,7 @@ set_target_properties(cmake_whole_archive_lib::dummy PROPERTIES
 
 and the target executable dies with an error.
 
-When `USE_ALIAS=ON` then the namespace target syntax is propagated to the pkconfig files and we see:
+When `USE_ALIAS=ON` then the namespace target syntax is propagated to the `pkconfig` files and we see:
 
 `${CMAKE_INSTALL_PREFIX}/lib/cmake/cmake_whole_archive_lib/cmake_whole_archive_libTargets.cmake`:
 ```

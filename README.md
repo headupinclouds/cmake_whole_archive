@@ -260,7 +260,7 @@ test 1
 ```
 
 
-Which make the final `main` target happy.
+Which makes the final `main` target happy.
 
 References:
 * https://gitlab.kitware.com/cmake/cmake/issues/16947
